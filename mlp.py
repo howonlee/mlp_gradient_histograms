@@ -195,8 +195,8 @@ if __name__ == '__main__':
     print "MNIST, friendo"
     network = MLP(784, 784, 10)
     samples = create_samples()
-    for i in range(100):
+    for i in range(5):
         n = np.random.randint(samples.size)
-        network.propagate_forward(samples['x'][n])
-        network.propagate_backward(samples['y'][n])
+        network.propagate_forward(samples['input'][n])
+        network.propagate_backward(samples['output'][n])
     # don't use the net for anything

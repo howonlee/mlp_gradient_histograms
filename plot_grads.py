@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# this is for plotting the gradients from learning the sin function
+
 if __name__ == "__main__":
     grads = []
     with open("grads") as grads_file:

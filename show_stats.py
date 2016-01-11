@@ -1,6 +1,7 @@
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
+import math
 
 if __name__ == "__main__":
     print "we are doing a sort of seedy thing, which I like to call in my head networkification"
@@ -18,10 +19,9 @@ if __name__ == "__main__":
     weights = []
     for x in xrange(network_mat.shape[0]):
         for y in xrange(network_mat.shape[1]):
-            weights.append(network_mat[x,y])
+            weights.append(abs(network_mat[x,y]))
             #network.add_edge(x, y, weight=network_mat[x,y])
     print "now, see if it percolates and has small world"
-##########################
     print "see if power law and/or fat tail in degrees and weights"
     weight_seq = sorted(weights, reverse=True)
     plt.loglog(weight_seq, 'b-')
@@ -29,7 +29,6 @@ if __name__ == "__main__":
     plt.ylabel("weight")
     plt.xlabel("rank")
     plt.show()
-##########################
     print "let's look at clustering coefficients, which I didn't mention in the essay but is pretty easy to understand: the number of triangles"
 ##########################
     print "inspect recursive structure by looking at the adjacency matrix"

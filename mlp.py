@@ -105,10 +105,10 @@ class MLP:
         for i in range(len(self.weights)):
             layer = np.atleast_2d(self.layers[i])
             delta = np.atleast_2d(deltas[i])
-            dw = np.dot(layer.T,delta)
             if i == 0:
-                np.save(filename, dw)
-                print "dw saved"
+                np.save(filename, delta)
+                print "delta saved"
+            dw = np.dot(layer.T,delta)
             self.weights[i] += lrate*dw + momentum*self.dw[i]
             self.dw[i] = dw
 
@@ -191,20 +191,23 @@ if __name__ == '__main__':
     # plt.axis([0,1,0,1])
     # plt.show()
 
+    def bitfield(n):
+        return np.array([n >> i & 1 for i in range(7,-1,-1)])
+
     def create_samples(filename="mnist.pkl.gz"):
         # only 500 datapoints, we don't even really need that many
         # we are not using this net, so can just use training only
-        samples = np.zeros(5000, dtype=[('input',  float, 784), ('output', float, 1)])
+        samples = np.zeros(50000, dtype=[('input',  float, 784), ('output', float, 8)])
         with gzip.open(filename, "rb") as f:
             train_set, valid_set, test_set = cPickle.load(f)
-            for x in xrange(5000):
-                samples[x] = train_set[0][x], train_set[1][x]
+            for x in xrange(50000):
+                samples[x] = train_set[0][x], bitfield(train_set[1][x])
         return samples
 
     print "MNIST, friendo"
-    network = MLP(784, 784, 10)
+    network = MLP(784, 784, 8)
     samples = create_samples()
-    for i in range(300):
+    for i in range(100):
         print "pattern: ", i
         n = np.random.randint(samples.size)
         network.propagate_forward(samples['input'][n])

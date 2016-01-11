@@ -26,4 +26,10 @@ if __name__ == "__main__":
     print "let's look at clustering coefficients, which I didn't mention in the essay but is pretty easy to understand: the number of triangles"
 ##########################
     print "inspect recursive structure by looking at the adjacency matrix"
+    print "there are more sophisticated methods,"
+    print "but you could probably just be convinced by looking at the thing and saying,"
+    print "mmm... yep, that there is pretty recursive"
+    print "for good measure, let's look at it normal size and zoomed in 2x. normal size:"
+##########################
+    print "zoomed in:"
 ##########################

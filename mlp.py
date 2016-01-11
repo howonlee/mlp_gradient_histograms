@@ -105,6 +105,11 @@ class MLP:
             delta = np.atleast_2d(deltas[i])
             dw = np.dot(layer.T,delta)
             print dw
+############################
+############################
+############################
+############################
+############################
             self.weights[i] += lrate*dw + momentum*self.dw[i]
             self.dw[i] = dw
 
@@ -190,6 +195,10 @@ if __name__ == '__main__':
     def create_samples(filename="mnist.pkl.gz"):
         # only 500 datapoints, we don't even really need that many
         samples = np.zeros(500, dtype=[('input',  float, 784), ('output', float, 1)])
+############################
+############################
+############################
+############################
         return samples
 
     print "MNIST, friendo"

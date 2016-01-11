@@ -12,16 +12,23 @@ if __name__ == "__main__":
     print "4. now you have a network, now go look at it to see if it's a complex network"
     print "if that explanation is not good enough, just look at the code. Usually, people say that sort of thing as a cop-out."
     print "it is kind of a total cop-out but the code is very simple, and you will wonder at how stupid it is"
-    THRESHOLD = 0.01
-    network_mat = read the mat
-    network = nx.Graph() # with weights and stuff? dunno
-    for x in network_mat.shape[0]:
-        for y in network_mat.shape[1]:
-            if network_mat > THRESHOLD:
-                network.add_edge(x,y, weight=network_mat[x,y]) ###############
+    FILENAME = "grad_mat.npy"
+    network_mat = np.load(FILENAME)
+    network = nx.Graph()
+    weights = []
+    for x in xrange(network_mat.shape[0]):
+        for y in xrange(network_mat.shape[1]):
+            weights.append(network_mat[x,y])
+            #network.add_edge(x, y, weight=network_mat[x,y])
     print "now, see if it percolates and has small world"
 ##########################
     print "see if power law and/or fat tail in degrees and weights"
+    weight_seq = sorted(weights, reverse=True)
+    plt.loglog(weight_seq, 'b-')
+    plt.title("weight rank plot")
+    plt.ylabel("weight")
+    plt.xlabel("rank")
+    plt.show()
 ##########################
     print "let's look at clustering coefficients, which I didn't mention in the essay but is pretty easy to understand: the number of triangles"
 ##########################
@@ -30,6 +37,16 @@ if __name__ == "__main__":
     print "but you could probably just be convinced by looking at the thing and saying,"
     print "mmm... yep, that there is pretty recursive"
     print "for good measure, let's look at it normal size and zoomed in 2x. normal size:"
-##########################
+    # plt.close()
+    # plt.matshow(np.abs(network_mat))
+    # plt.colorbar()
+    # plt.title("normal size gradient 'network' adj. mat")
+    # plt.show()
     print "zoomed in:"
-##########################
+    # net_shape = network_mat.shape
+    # plt.close()
+    # plt.matshow(np.abs(network_mat[:net_shape[0] // 2, :net_shape[1] // 2]))
+    # plt.title("zoomed in gradient 'network' adj. mat")
+    # plt.colorbar()
+    # plt.show()
+    print "it's not an interesting fractal, yes. but it's a fractal."

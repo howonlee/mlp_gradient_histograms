@@ -106,8 +106,9 @@ class MLP:
             layer = np.atleast_2d(self.layers[i])
             delta = np.atleast_2d(deltas[i])
             dw = np.dot(layer.T,delta)
-            np.save(filename, dw)
-            print "dw saved"
+            if i == 0:
+                np.save(filename, dw)
+                print "dw saved"
             self.weights[i] += lrate*dw + momentum*self.dw[i]
             self.dw[i] = dw
 
@@ -193,17 +194,18 @@ if __name__ == '__main__':
     def create_samples(filename="mnist.pkl.gz"):
         # only 500 datapoints, we don't even really need that many
         # we are not using this net, so can just use training only
-        samples = np.zeros(500, dtype=[('input',  float, 784), ('output', float, 1)])
+        samples = np.zeros(5000, dtype=[('input',  float, 784), ('output', float, 1)])
         with gzip.open(filename, "rb") as f:
             train_set, valid_set, test_set = cPickle.load(f)
-            for x in xrange(500):
+            for x in xrange(5000):
                 samples[x] = train_set[0][x], train_set[1][x]
         return samples
 
     print "MNIST, friendo"
     network = MLP(784, 784, 10)
     samples = create_samples()
-    for i in range(5):
+    for i in range(300):
+        print "pattern: ", i
         n = np.random.randint(samples.size)
         network.propagate_forward(samples['input'][n])
         network.propagate_backward(samples['output'][n])

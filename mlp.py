@@ -18,6 +18,8 @@
 # modified by Howon Lee to make a point about the fractal nature of backprop
 # -----------------------------------------------------------------------------
 import numpy as np
+import cPickle
+import gzip
 
 def sigmoid(x):
     ''' Sigmoid like function using tanh '''
@@ -84,7 +86,7 @@ class MLP:
         return self.layers[-1]
 
 
-    def propagate_backward(self, target, lrate=0.1, momentum=0.1):
+    def propagate_backward(self, target, lrate=0.1, momentum=0.1, filename="grad_mat"):
         ''' Back propagate error related to target using lrate. '''
 
         deltas = []
@@ -104,12 +106,8 @@ class MLP:
             layer = np.atleast_2d(self.layers[i])
             delta = np.atleast_2d(deltas[i])
             dw = np.dot(layer.T,delta)
-            print dw
-############################
-############################
-############################
-############################
-############################
+            np.save(filename, dw)
+            print "dw saved"
             self.weights[i] += lrate*dw + momentum*self.dw[i]
             self.dw[i] = dw
 
@@ -194,11 +192,12 @@ if __name__ == '__main__':
 
     def create_samples(filename="mnist.pkl.gz"):
         # only 500 datapoints, we don't even really need that many
+        # we are not using this net, so can just use training only
         samples = np.zeros(500, dtype=[('input',  float, 784), ('output', float, 1)])
-############################
-############################
-############################
-############################
+        with gzip.open(filename, "rb") as f:
+            train_set, valid_set, test_set = cPickle.load(f)
+            for x in xrange(500):
+                samples[x] = train_set[0][x], train_set[1][x]
         return samples
 
     print "MNIST, friendo"

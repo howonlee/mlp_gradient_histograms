@@ -32,23 +32,7 @@ if __name__ == "__main__":
     plt.axis([1, 1.00000000005, 0, 40000])
     plt.title("weight hist plot")
     plt.show()
+
+    print "the mere degree plot is pretty disappointing, but it's disappointing in a very familiar way"
     print "let's look at clustering coefficients, which I didn't mention in the essay but is pretty easy to understand: the number of triangles"
 ##########################
-    print "inspect recursive structure by looking at the adjacency matrix"
-    print "there are more sophisticated methods,"
-    print "but you could probably just be convinced by looking at the thing and saying,"
-    print "mmm... yep, that there is pretty recursive"
-    print "for good measure, let's look at it normal size and zoomed in 2x. normal size:"
-    # plt.close()
-    # plt.matshow(np.abs(network_mat))
-    # plt.colorbar()
-    # plt.title("normal size gradient 'network' adj. mat")
-    # plt.show()
-    print "zoomed in:"
-    # net_shape = network_mat.shape
-    # plt.close()
-    # plt.matshow(np.abs(network_mat[:net_shape[0] // 2, :net_shape[1] // 2]))
-    # plt.title("zoomed in gradient 'network' adj. mat")
-    # plt.colorbar()
-    # plt.show()
-    print "it's not an interesting fractal, yes. but it's a fractal."

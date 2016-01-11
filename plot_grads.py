@@ -10,6 +10,9 @@ if __name__ == "__main__":
             try:
                 grads.append(abs(float(line)) + 1)
             except:
+                # let it go, let it go, I am one with the wind and sky
+                # my soul is spiraling in frozen fractals all around
+                # :p
                 pass
     plt.hist(grads, bins=np.logspace(0.001, 0.05, 50))
     plt.gca().set_xscale("log")

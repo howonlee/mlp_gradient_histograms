@@ -14,20 +14,23 @@ if __name__ == "__main__":
     print "if that explanation is not good enough, just look at the code. Usually, people say that sort of thing as a cop-out."
     print "it is kind of a total cop-out but the code is very simple, and you will wonder at how stupid it is"
     FILENAME = "grad_mat.npy"
-    network_mat = np.load(FILENAME)
+    network_mat = np.abs(np.load(FILENAME))
+    THRESH = np.mean(network_mat) # something robust, maybe?
     network = nx.Graph()
     weights = []
     for x in xrange(network_mat.shape[0]):
         for y in xrange(network_mat.shape[1]):
-            weights.append(abs(network_mat[x,y]))
-            #network.add_edge(x, y, weight=network_mat[x,y])
+            weights.append(network_mat[x,y] + 1)
+            if network_mat[x,y] > THRESH:
+                network.add_edge(x, y, weight=network_mat[x,y])
     print "now, see if it percolates and has small world"
     print "see if power law and/or fat tail in degrees and weights"
     weight_seq = sorted(weights, reverse=True)
-    plt.loglog(weight_seq, 'b-')
-    plt.title("weight rank plot")
-    plt.ylabel("weight")
-    plt.xlabel("rank")
+    plt.hist(weight_seq) # plt.plot(weight_seq, 'b-')
+    plt.gca().set_xscale("log")
+    plt.gca().set_yscale("log")
+    plt.axis([1, 1.00000000005, 0, 40000])
+    plt.title("weight hist plot")
     plt.show()
     print "let's look at clustering coefficients, which I didn't mention in the essay but is pretty easy to understand: the number of triangles"
 ##########################

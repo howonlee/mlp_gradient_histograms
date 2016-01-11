@@ -105,10 +105,10 @@ class MLP:
         for i in range(len(self.weights)):
             layer = np.atleast_2d(self.layers[i])
             delta = np.atleast_2d(deltas[i])
-            if i == 0:
-                np.save(filename, delta)
-                print "delta saved"
             dw = np.dot(layer.T,delta)
+            if i == 0:
+                np.save(filename, dw)
+                print "dw saved"
             self.weights[i] += lrate*dw + momentum*self.dw[i]
             self.dw[i] = dw
 

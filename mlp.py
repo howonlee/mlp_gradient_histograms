@@ -89,8 +89,7 @@ class MLP:
             layer = np.atleast_2d(self.layers[i])
             delta = np.atleast_2d(deltas[i])
             dw = np.dot(layer.T,delta)
-            for member in dw.flat:
-                print member
+            print delta
             self.weights[i] += lrate*dw + momentum*self.dw[i]
             self.dw[i] = dw
 
@@ -152,23 +151,33 @@ if __name__ == '__main__':
     # Example 4 : Learning sin(x)
     # -------------------------------------------------------------------------
     #print "Learning the sin function"
-    network = MLP(1,10,1)
-    samples = np.zeros(500, dtype=[('x',  float, 1), ('y', float, 1)])
-    samples['x'] = np.linspace(0,1,500)
-    samples['y'] = np.sin(samples['x']*np.pi)
+    # network = MLP(1,10,1)
+    # samples = np.zeros(500, dtype=[('x',  float, 1), ('y', float, 1)])
+    # samples['x'] = np.linspace(0,1,500)
+    # samples['y'] = np.sin(samples['x']*np.pi)
 
+    # for i in range(10000):
+    #     n = np.random.randint(samples.size)
+    #     network.propagate_forward(samples['x'][n])
+    #     network.propagate_backward(samples['y'][n])
+
+    # plt.figure(figsize=(10,5))
+    # # Draw real function
+    # x,y = samples['x'],samples['y']
+    # plt.plot(x,y,color='b',lw=1)
+    # # Draw network approximated function
+    # for i in range(samples.shape[0]):
+    #     y[i] = network.propagate_forward(x[i])
+    # plt.plot(x,y,color='r',lw=3)
+    # plt.axis([0,1,0,1])
+    # plt.show()
+
+    print "MNIST, friendo"
+    network = MLP(some bullcrap)
+    samples = read off something
+    samples['x'] = something
+    samples['y'] = something
     for i in range(10000):
         n = np.random.randint(samples.size)
         network.propagate_forward(samples['x'][n])
         network.propagate_backward(samples['y'][n])
-
-    plt.figure(figsize=(10,5))
-    # Draw real function
-    x,y = samples['x'],samples['y']
-    plt.plot(x,y,color='b',lw=1)
-    # Draw network approximated function
-    for i in range(samples.shape[0]):
-        y[i] = network.propagate_forward(x[i])
-    plt.plot(x,y,color='r',lw=3)
-    plt.axis([0,1,0,1])
-    plt.show()

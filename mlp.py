@@ -4,9 +4,18 @@
 # Copyright (C) 2011  Nicolas P. Rougier
 #
 # Distributed under the terms of the BSD License.
+
+# shamelessly taken and modified by Howon Lee in 2016, cuz BSD allows that
+# only Howon doesn't know which version of the BSD license Howon should replicate
+# so whatever version NP Rougier wanted, consider it replicated
+# dont think that NP Rougier has heard of Howon, because he prolly hasn't
+# nor vice versa, now that Howon thinks about it
 # -----------------------------------------------------------------------------
+
 # This is an implementation of the multi-layer perceptron with retropropagation
 # learning.
+
+# modified by Howon Lee to make a point about the fractal nature of backprop
 # -----------------------------------------------------------------------------
 import numpy as np
 
@@ -19,7 +28,13 @@ def dsigmoid(x):
     return 1.0-x**2
 
 class MLP:
-    ''' Multi-layer perceptron class. '''
+    '''
+    Multi-layer perceptron class.
+    This thing has momentum, which is helpful for thinking about the matching.
+    Argument: if we have to do the fractal unscrambling multiple times for each backprop
+    momentum wouldn't really work at all
+    This is used via SGD only in the MNIST thing Howon rigged up
+    '''
 
     def __init__(self, *args):
         ''' Initialization of the perceptron with given sizes.  '''
@@ -89,7 +104,7 @@ class MLP:
             layer = np.atleast_2d(self.layers[i])
             delta = np.atleast_2d(deltas[i])
             dw = np.dot(layer.T,delta)
-            print delta
+            print dw
             self.weights[i] += lrate*dw + momentum*self.dw[i]
             self.dw[i] = dw
 
@@ -102,21 +117,21 @@ if __name__ == '__main__':
     import matplotlib
     import matplotlib.pyplot as plt
 
-    def learn(network,samples, epochs=2500, lrate=.1, momentum=0.1):
-        # Train
-        for i in range(epochs):
-            n = np.random.randint(samples.size)
-            network.propagate_forward( samples['input'][n] )
-            network.propagate_backward( samples['output'][n], lrate, momentum )
-        # Test
-        for i in range(samples.size):
-            o = network.propagate_forward( samples['input'][i] )
-            #print i, samples['input'][i], '%.2f' % o[0],
-            #print '(expected %.2f)' % samples['output'][i]
-        #print
+    # def learn(network,samples, epochs=2500, lrate=.1, momentum=0.1):
+    #     # Train
+    #     for i in range(epochs):
+    #         n = np.random.randint(samples.size)
+    #         network.propagate_forward( samples['input'][n] )
+    #         network.propagate_backward( samples['output'][n], lrate, momentum )
+    #     # Test
+    #     for i in range(samples.size):
+    #         o = network.propagate_forward( samples['input'][i] )
+    #         #print i, samples['input'][i], '%.2f' % o[0],
+    #         #print '(expected %.2f)' % samples['output'][i]
+    #     #print
 
-    network = MLP(2,2,1)
-    samples = np.zeros(4, dtype=[('input',  float, 2), ('output', float, 1)])
+    # network = MLP(2,2,1)
+    # samples = np.zeros(4, dtype=[('input',  float, 2), ('output', float, 1)])
 
     # Example 1 : OR logical function
     # -------------------------------------------------------------------------
@@ -172,12 +187,16 @@ if __name__ == '__main__':
     # plt.axis([0,1,0,1])
     # plt.show()
 
+    def create_samples(filename="mnist.pkl.gz"):
+        # only 500 datapoints, we don't even really need that many
+        samples = np.zeros(500, dtype=[('input',  float, 784), ('output', float, 1)])
+        return samples
+
     print "MNIST, friendo"
-    network = MLP(some bullcrap)
-    samples = read off something
-    samples['x'] = something
-    samples['y'] = something
-    for i in range(10000):
+    network = MLP(784, 784, 10)
+    samples = create_samples()
+    for i in range(100):
         n = np.random.randint(samples.size)
         network.propagate_forward(samples['x'][n])
         network.propagate_backward(samples['y'][n])
+    # don't use the net for anything

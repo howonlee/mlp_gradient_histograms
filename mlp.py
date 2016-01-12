@@ -16,6 +16,7 @@
 # learning.
 
 # modified by Howon Lee to make a point about the fractal nature of backprop
+# play with the params as you like
 # -----------------------------------------------------------------------------
 import numpy as np
 import cPickle

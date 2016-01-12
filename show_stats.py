@@ -16,20 +16,22 @@ if __name__ == "__main__":
     FILENAME = "grad_mat.npy"
     network_mat = np.abs(np.load(FILENAME))
     THRESH = np.mean(network_mat) # something robust, maybe?
+    print THRESH
     network = nx.Graph()
     weights = []
     for x in xrange(network_mat.shape[0]):
         for y in xrange(network_mat.shape[1]):
-            weights.append(network_mat[x,y] + 1)
+            weights.append(network_mat[x,y] + 1.0)
             if network_mat[x,y] > THRESH:
                 network.add_edge(x, y, weight=network_mat[x,y])
     print "now, see if it percolates and has small world"
     print "see if power law and/or fat tail in degrees and weights"
     weight_seq = sorted(weights, reverse=True)
-    plt.hist(weight_seq) # plt.plot(weight_seq, 'b-')
+    plt.hist(weight_seq, bins=30, facecolor='blue', histtype='bar') # plt.plot(weight_seq, 'b-')
     plt.gca().set_xscale("log")
     plt.gca().set_yscale("log")
-    plt.axis([1, 1.00000000005, 0, 40000])
+    plt.axis([1, 1 + (THRESH * 50.0), 0, 40000])
+    plt.grid(True)
     plt.title("weight hist plot")
     plt.show()
 

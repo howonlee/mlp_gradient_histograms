@@ -13,7 +13,8 @@ if __name__ == "__main__":
     for x in xrange(gradient_mat.shape[0]):
         for y in xrange(gradient_mat.shape[1]):
             weights.append(gradient_mat[x,y] + 1.0)
-    print "see if power law and/or fat tail in weights"
+    print "see if there is a power law and/or fat tail in weight distribution"
+    print "let's see that weight histogram, in other weights"
     weight_seq = sorted(weights, reverse=True)
     plt.hist(weight_seq, bins=30)
     plt.gca().set_xscale("log")

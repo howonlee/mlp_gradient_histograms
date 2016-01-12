@@ -7,6 +7,6 @@ Run mlp.py, then show_stats.py, you should see a radical inequality that a physi
 
 If you are piqued by show_stats.py, try fractal_stats.py, which does the comparable looking at the histograms of weights for a weighted ifs-generated fractal (Sierpinski-like thing).
 
-If you are piqued by _that_, try network_stats.py, which takes the gradient for one SGD step from mlp.py and tries turning it into a network.
+If you are piqued by _that_, try network_stats.py, which takes the gradient for one SGD step from mlp.py and tries turning it into a network. That network looks suspiciously like a social network.
 
 This is BSD-licensed, made by NP Rougier, edited by Howon Lee

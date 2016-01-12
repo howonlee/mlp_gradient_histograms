@@ -15,7 +15,7 @@ if __name__ == "__main__":
             weights.append(gradient_mat[x,y] + 1.0)
     print "see if power law and/or fat tail in weights"
     weight_seq = sorted(weights, reverse=True)
-    plt.hist(weight_seq, bins=30, facecolor='blue', histtype='bar') # plt.plot(weight_seq, 'b-')
+    plt.hist(weight_seq, bins=30)
     plt.gca().set_xscale("log")
     plt.gca().set_yscale("log")
     plt.axis([1, 1 + (THRESH * 50.0), 0, 40000])

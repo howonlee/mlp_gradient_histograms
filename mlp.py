@@ -213,4 +213,4 @@ if __name__ == '__main__':
         n = np.random.randint(samples.size)
         network.propagate_forward(samples['input'][n])
         network.propagate_backward(samples['output'][n])
-    # don't use the net for anything
+    print "and then we don't use the net for anything"

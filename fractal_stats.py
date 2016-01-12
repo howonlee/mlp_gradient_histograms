@@ -11,9 +11,13 @@ def weighted_sierpinski(order):
 
 if __name__ == "__main__":
     frac = weighted_sierpinski(10)
+    # # if you are piqued and want to see the thing, uncomment the below:
+    # plt.imshow(frac)
+    # plt.colorbar()
+    # plt.show()
+    # plt.close()
     frac_mean = np.mean(frac)
     frac += 1.0
-    print frac_mean
     weights = list(frac.ravel())
     weight_seq = sorted(weights, reverse=True)
     plt.hist(weight_seq, bins=30, histtype='bar')

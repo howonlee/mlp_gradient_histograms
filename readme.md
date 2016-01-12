@@ -5,6 +5,6 @@ Get mnist.pkl.gz from the theano site or [here](https://github.com/mnielsen/neur
 
 Run mlp.py, then show_stats.py, you should see a radical inequality that a physicist who hasn't read [Clauset Shalizi Newman 2007](http://arxiv.org/abs/0706.1062) would call a power law. It should just have a heavy tail, anyhow.
 
-If you are piqued by _those_, compare to fractal_stats.py
+If you are piqued by show_stats.py, try fractal_stats.py, which does the comparable looking at the histograms of weights for a weighted ifs-generated fractal (Sierpinski-like thing).
 
 This is BSD-licensed, made by NP Rougier, edited by Howon Lee

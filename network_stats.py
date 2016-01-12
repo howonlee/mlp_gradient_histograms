@@ -7,8 +7,14 @@ if __name__ == "__main__":
     FILENAME = "grad_mat.npy"
     network_mat = np.abs(np.load(FILENAME))
     max_network_member = np.max(network_mat)
+    print "this is not really something you are supposed to do, I think"
+    print "but it is quite interesting."
+    print "take the gradient matrix, normalize it so that the biggest single member of that matrix is 1"
     network_mat /= max_network_member
     network = nx.Graph()
+    print "that defines an ensemble of networks. sample from that ensemble."
+    print "that sample will look suspiciously like a social network."
+    print "did you expect that?"
     for x in xrange(network_mat.shape[0]):
         for y in xrange(network_mat.shape[1]):
             if network_mat[x,y] > npr.rand():
@@ -19,4 +25,7 @@ if __name__ == "__main__":
     plt.gca().set_yscale("log")
     plt.axis([1, 1000, 0, 1000])
     plt.grid(True)
+    plt.title("degree histogram")
     plt.show()
+    print "diameter is: ", nx.diameter(network)
+    print "mean clustering coefficient: ", np.mean(np.array([val for key, val in nx.clustering(network).iteritems()]))

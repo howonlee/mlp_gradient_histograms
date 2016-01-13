@@ -32,3 +32,8 @@ if __name__ == "__main__":
     print "tail is definitely not power law, but definitely a heavy tail tho"
     print "diameter is: ", nx.diameter(network)
     print "mean clustering coefficient: ", np.mean(np.array([val for key, val in nx.clustering(network).iteritems()]))
+    print "now let's see that adjacency matrix"
+    adj_mat = nx.adjacency_matrix(network)
+    plt.imshow(adj_mat)
+    plt.colorbar()
+    plt.show()

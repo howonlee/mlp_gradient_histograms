@@ -23,9 +23,12 @@ if __name__ == "__main__":
     plt.hist(degree_sequence, 60)
     plt.gca().set_xscale("log")
     plt.gca().set_yscale("log")
+    plt.ylabel("number of nodes with that degree")
+    plt.xlabel("degree")
     plt.axis([1, 1000, 0, 1000])
     plt.grid(True)
     plt.title("degree histogram")
     plt.show()
+    print "tail is definitely not power law, but definitely a heavy tail tho"
     print "diameter is: ", nx.diameter(network)
     print "mean clustering coefficient: ", np.mean(np.array([val for key, val in nx.clustering(network).iteritems()]))

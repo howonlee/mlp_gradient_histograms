@@ -4,7 +4,7 @@ import math
 
 if __name__ == "__main__":
     print "take abs values of everything"
-    print "it is kind of a total cop-out but the code is very simple, and you will wonder at how stupid it is"
+    print "it is kind of a total cop-out but the code is very simple, and you will wonder at how stupid it is and how you are still seeing a heavy tail"
     FILENAME = "grad_mat.npy"
     gradient_mat = np.abs(np.load(FILENAME))
     THRESH = np.mean(gradient_mat) # something robust, maybe?
@@ -13,13 +13,15 @@ if __name__ == "__main__":
     for x in xrange(gradient_mat.shape[0]):
         for y in xrange(gradient_mat.shape[1]):
             weights.append(gradient_mat[x,y] + 1.0)
-    print "see if there is a power law and/or fat tail in weight distribution"
+    print "see if there is a heavy tail in gradient value distribution"
     print "let's see that weight histogram, in other weights"
     weight_seq = sorted(weights, reverse=True)
     plt.hist(weight_seq, bins=30)
     plt.gca().set_xscale("log")
     plt.gca().set_yscale("log")
+    plt.ylabel("number of gradients in histogram bucket")
+    plt.xlabel("value of gradient + 1")
     plt.axis([1, 1 + (THRESH * 50.0), 0, 40000])
     plt.grid(True)
-    plt.title("weight hist plot")
+    plt.title("gradient value hist plot")
     plt.show()

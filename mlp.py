@@ -33,9 +33,6 @@ def dsigmoid(x):
 class MLP:
     '''
     Multi-layer perceptron class.
-    This thing has momentum, which is helpful for thinking about the matching.
-    Argument: if we have to do the fractal unscrambling multiple times for each backprop
-    momentum wouldn't really work at all
     This is used via SGD only in the MNIST thing Howon rigged up
     '''
 
@@ -122,77 +119,11 @@ if __name__ == '__main__':
     import matplotlib
     import matplotlib.pyplot as plt
 
-    # def learn(network,samples, epochs=2500, lrate=.1, momentum=0.1):
-    #     # Train
-    #     for i in range(epochs):
-    #         n = np.random.randint(samples.size)
-    #         network.propagate_forward( samples['input'][n] )
-    #         network.propagate_backward( samples['output'][n], lrate, momentum )
-    #     # Test
-    #     for i in range(samples.size):
-    #         o = network.propagate_forward( samples['input'][i] )
-    #         #print i, samples['input'][i], '%.2f' % o[0],
-    #         #print '(expected %.2f)' % samples['output'][i]
-    #     #print
-
-    # network = MLP(2,2,1)
-    # samples = np.zeros(4, dtype=[('input',  float, 2), ('output', float, 1)])
-
-    # Example 1 : OR logical function
-    # -------------------------------------------------------------------------
-    #print "Learning the OR logical function"
-    #network.reset()
-    #samples[0] = (0,0), 0
-    #samples[1] = (1,0), 1
-    #samples[2] = (0,1), 1
-    #samples[3] = (1,1), 1
-    #learn(network, samples)
-
-    # Example 2 : AND logical function
-    # -------------------------------------------------------------------------
-    # print "Learning the AND logical function"
-    # network.reset()
-    # samples[0] = (0,0), 0
-    # samples[1] = (1,0), 0
-    # samples[2] = (0,1), 0
-    # samples[3] = (1,1), 1
-    # learn(network, samples)
-
-    # # Example 3 : XOR logical function
-    # # -------------------------------------------------------------------------
-    # print "Learning the XOR logical function"
-    # network.reset()
-    # samples[0] = (0,0), 0
-    # samples[1] = (1,0), 1
-    # samples[2] = (0,1), 1
-    # samples[3] = (1,1), 0
-    # learn(network, samples)
-
-    # Example 4 : Learning sin(x)
-    # -------------------------------------------------------------------------
-    #print "Learning the sin function"
-    # network = MLP(1,10,1)
-    # samples = np.zeros(500, dtype=[('x',  float, 1), ('y', float, 1)])
-    # samples['x'] = np.linspace(0,1,500)
-    # samples['y'] = np.sin(samples['x']*np.pi)
-
-    # for i in range(10000):
-    #     n = np.random.randint(samples.size)
-    #     network.propagate_forward(samples['x'][n])
-    #     network.propagate_backward(samples['y'][n])
-
-    # plt.figure(figsize=(10,5))
-    # # Draw real function
-    # x,y = samples['x'],samples['y']
-    # plt.plot(x,y,color='b',lw=1)
-    # # Draw network approximated function
-    # for i in range(samples.shape[0]):
-    #     y[i] = network.propagate_forward(x[i])
-    # plt.plot(x,y,color='r',lw=3)
-    # plt.axis([0,1,0,1])
-    # plt.show()
-
     def bitfield(n):
+        """
+        Don't care about the MLP results, so don't care about the output patterns
+        So let's do this
+        """
         return np.array([n >> i & 1 for i in range(7,-1,-1)])
 
     def create_samples(filename="mnist.pkl.gz"):

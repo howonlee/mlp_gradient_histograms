@@ -17,15 +17,16 @@ if __name__ == "__main__":
     print "did you expect that?"
     for x in xrange(network_mat.shape[0]):
         for y in xrange(network_mat.shape[1]):
+            # print network_mat[x,y]
             if network_mat[x,y] > npr.rand():
                 network.add_edge(x, y, weight=network_mat[x,y])
     degree_sequence = sorted(nx.degree(network).values(),reverse=True)
-    plt.hist(degree_sequence, 60)
+    plt.hist(degree_sequence, 100)
     plt.gca().set_xscale("log")
     plt.gca().set_yscale("log")
     plt.ylabel("number of nodes with that degree")
     plt.xlabel("degree")
-    plt.axis([1, 1000, 0, 1000])
+    plt.axis([1, 2000, 0, 2000])
     plt.grid(True)
     plt.title("degree histogram")
     plt.show()

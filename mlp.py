@@ -19,6 +19,7 @@
 # play with the params as you like
 # -----------------------------------------------------------------------------
 import numpy as np
+import numpy.random as npr
 import cPickle
 import gzip
 
@@ -67,7 +68,7 @@ class MLP:
 
         for i in range(len(self.weights)):
             Z = np.random.random((self.layers[i].size,self.layers[i+1].size))
-            self.weights[i][...] = (2*Z-1)*0.25
+            self.weights[i][...] = (2*Z-1)*0.1
 
     def propagate_forward(self, data):
         ''' Propagate data from input layer to output layer. '''
@@ -105,8 +106,10 @@ class MLP:
             delta = np.atleast_2d(deltas[i])
             dw = np.dot(layer.T,delta)
             if i == 0:
+                np.save("layer", self.layers[i])
+                np.save("delta", deltas[i])
                 np.save(grad_filename, dw)
-                print "dw saved"
+                print "layer, delta, dw saved"
             self.weights[i] += lrate*dw + momentum*self.dw[i]
             if i == 0:
                 np.save(weight_filename, self.weights[i])
@@ -129,20 +132,43 @@ if __name__ == '__main__':
         """
         return np.array([n >> i & 1 for i in range(7,-1,-1)])
 
-    def create_samples(filename="mnist.pkl.gz"):
+    def onehots(n):
+        arr = np.array([0.0] * 10)
+        arr[n] = 1.0
+        return arr
+
+    def create_mnist_samples(filename="mnist.pkl.gz"):
         # only 500 datapoints, we don't even really need that many
         # we are not using this net, so can just use training only
-        samples = np.zeros(50000, dtype=[('input',  float, 784), ('output', float, 8)])
+        samples = np.zeros(50000, dtype=[('input',  float, 784), ('output', float, 10)])
         with gzip.open(filename, "rb") as f:
             train_set, valid_set, test_set = cPickle.load(f)
             for x in xrange(50000):
-                samples[x] = train_set[0][x], bitfield(train_set[1][x])
+                samples[x] = train_set[0][x], onehots(train_set[1][x])
+        return samples
+
+    def create_cifar_samples(filename="some shit"):
+        samples = some shit
+        return samples
+
+    def create_random_samples():
+        # only 500 datapoints, we don't even really need that many
+        # we are not using this net, so can just use training only
+        samples = np.zeros(50000, dtype=[('input',  float, 784), ('output', float, 4)])
+        for x in xrange(50000):
+            samples[x] = npr.random(784), bitfield(5)
+            # samples[x] = npr.random(784), bitfield(npr.random_integers(1, 10))
+        # with gzip.open(filename, "rb") as f:
+        #     train_set, valid_set, test_set = cPickle.load(f)
+        #     for x in xrange(50000):
+        #         samples[x] = train_set[0][x], bitfield(train_set[1][x])
         return samples
 
     print "MNIST, friendo"
-    network = MLP(784, 784, 8)
+    network = MLP(784, 784, 10)
     samples = create_samples()
-    for i in range(1000):
+    # prone to numerical problems
+    for i in range(1):
         print "pattern: ", i
         n = np.random.randint(samples.size)
         network.propagate_forward(samples['input'][n])

@@ -1,7 +1,7 @@
 Fractal patterns in backprop gradients for MLP
 ---
 
-Get mnist.pkl.gz from the theano site or [here](https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/data/mnist.pkl.gz), put in in the containing folder willy-nilly. If you want the CIFAR samples, do the same for CIFAR.
+Get mnist.pkl.gz from the theano site or [here](https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/data/mnist.pkl.gz), put in in the containing folder willy-nilly. If you want the CIFAR samples, get that [data](https://www.cs.toronto.edu/~kriz/cifar.html). CIFAR-10, mind you. Take it out of gzip and put it in a folder called `cifar-10-batches-py`.
 
 I don't have a proper requirements.txt but new numpy, matplotlib, networkx should be all you need.
 

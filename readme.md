@@ -5,7 +5,7 @@ Get mnist.pkl.gz from the theano site or [here](https://github.com/mnielsen/neur
 
 I don't have a proper requirements.txt but new numpy, matplotlib, networkx should be all you need.
 
-Run `mlp.py`, then `show_stats.py`, you should see a radical inequality that someone who hasn't read [Clauset Shalizi Newman 2007](http://arxiv.org/abs/0706.1062) would call a power law. It should just have a heavy tail, anyhow. Now, try it with the random samples (there's a function called create_random_samples). Then, try it with the CIFAR samples (in a function called create_cifar_samples). I am greatly amused myself by the fact that it loses the shape it has in the random samples. Jeff was quite alarmed about the seeming squareness on the pattern, but look at CIFAR.
+Run `mlp.py`, then `show_stats.py`, you should see a radical inequality that someone who hasn't read [Clauset Shalizi Newman 2007](http://arxiv.org/abs/0706.1062) would call a power law. It should just have a heavy tail, anyhow, I think it may be a stretched exponential. Now, try it with the random samples (there's a function called create_random_samples). Then, try it with the CIFAR samples (in a function called create_cifar_samples). I am greatly amused myself by the fact that it loses the shape it has in the random samples. Jeff was quite alarmed about the seeming squareness on the pattern, but look at CIFAR.
 
 There is often a zeroing-out numerical problem, especially with the random samples, because the network gets into a corner.
 

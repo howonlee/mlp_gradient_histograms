@@ -68,7 +68,7 @@ class MLP:
 
         for i in range(len(self.weights)):
             Z = np.random.random((self.layers[i].size,self.layers[i+1].size))
-            self.weights[i][...] = (2*Z-1)*0.1
+            self.weights[i][...] = (2*Z-1)*0.25
 
     def propagate_forward(self, data):
         ''' Propagate data from input layer to output layer. '''
@@ -145,30 +145,32 @@ if __name__ == '__main__':
             train_set, valid_set, test_set = cPickle.load(f)
             for x in xrange(50000):
                 samples[x] = train_set[0][x], onehots(train_set[1][x])
-        return samples
+        return samples, 784
 
-    def create_cifar_samples(filename="some shit"):
-        samples = some shit
-        return samples
+    def create_cifar_samples(filename="cifar-10-batches-py/data_batch_1"):
+        samples = np.zeros(10000, dtype=[('input',  float, 3072), ('output', float, 10)])
+        with open(filename, "rb") as f:
+            cifar_dict = cPickle.load(f)
+            for x in xrange(10000):
+                # CIFAR is uint8s, but I would like floats
+                samples[x] = cifar_dict["data"][x] / 256.0, onehots(cifar_dict["labels"][x])
+        return samples, 3072
 
     def create_random_samples():
         # only 500 datapoints, we don't even really need that many
         # we are not using this net, so can just use training only
-        samples = np.zeros(50000, dtype=[('input',  float, 784), ('output', float, 4)])
+        # big numerical problems with this one!
+        samples = np.zeros(50000, dtype=[('input',  float, 784), ('output', float, 10)])
         for x in xrange(50000):
-            samples[x] = npr.random(784), bitfield(5)
-            # samples[x] = npr.random(784), bitfield(npr.random_integers(1, 10))
-        # with gzip.open(filename, "rb") as f:
-        #     train_set, valid_set, test_set = cPickle.load(f)
-        #     for x in xrange(50000):
-        #         samples[x] = train_set[0][x], bitfield(train_set[1][x])
-        return samples
+            # try it with either one
+            samples[x] = npr.random(784), onehots(5)
+            # samples[x] = npr.random(784), onehots(npr.random_integers(1, 10))
+        return samples, 784
 
-    print "MNIST, friendo"
-    network = MLP(784, 784, 10)
-    samples = create_samples()
-    # prone to numerical problems
-    for i in range(1):
+    print "learning the patterns..."
+    samples, dims = create_mnist_samples()
+    network = MLP(dims, dims, 10)
+    for i in range(500):
         print "pattern: ", i
         n = np.random.randint(samples.size)
         network.propagate_forward(samples['input'][n])

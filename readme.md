@@ -7,7 +7,7 @@ I don't have a proper requirements.txt but new numpy, matplotlib, networkx shoul
 
 Run `mlp.py`, then `show_stats.py`, you should see a radical inequality that someone who hasn't read [Clauset Shalizi Newman 2007](http://arxiv.org/abs/0706.1062) would call a power law. It should just have a heavy tail, anyhow, I think it may be a stretched exponential. Now, try it with the random samples (there's a function called create_random_samples). Then, try it with the CIFAR samples (in a function called create_cifar_samples). I am greatly amused myself by the fact that it loses the shape it has in the random samples. Jeff was quite alarmed about the seeming squareness on the pattern, but look at CIFAR.
 
-There is often a zeroing-out numerical problem, especially with the random samples, because the network gets into a corner. I will leave it as is because I haven't decided on the proper way to interact with the absolute valuation I'm doing
+There is often a zeroing-out numerical problem, especially with the random samples, because the network gets into a corner. I will leave it as is because I haven't decided on the proper way to interact with the absolute valuation I'm doing. One valid criticism is that I'm taking absolute values and saying nothing about them, which I definitely need to look into
 
 If you are piqued by `show_stats.py`, try `show_delta_stats.py`, which looks at the cached deltas, and `fractal_stats.py`, which does the comparable looking at the histograms of a "gradient" for a weighted ifs-generated fractal (Sierpinski-like thing, but with typical-ish parameter for a stochastic kronecker graph. I was always amused by the strange sameness of the parameters they got for radically different networks).
 

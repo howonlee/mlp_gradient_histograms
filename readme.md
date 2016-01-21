@@ -13,6 +13,8 @@ If you are piqued by `show_stats.py`, try `show_delta_stats.py`, which looks at 
 
 If you are piqued by _that_, try `grad_network.py`, which takes the gradient for one SGD step from mlp.py and tries turning it into a network by the unscrupulous ensemble-sampling way mentioned in the essay. That network looks suspiciously like a social network (complex network). Also look at `weight_network.py`, which does the same for the weights for a whole trained multilayer perceptron, showing that this "induced weight network" is _not_ a complex network. Compare the network you get from `weight_network.py` to section IV.A of MEJ Newman's review of power laws. Sole et al I think have a definition for informational quantities _on_ networks (entropy, mutual information, etc), I forget if it's the only good one, but it's a good one.
 
+A really fun thing is that using a threshhold instead of sampling from the ensemblesort of replicates the degree multiplicity problem Leskovec et al mentions in their original SKG work, I think.
+
 This is BSD-licensed, made by NP Rougier, edited by Howon Lee. Thanks to Jeff Shrager for helping me poking at it.
 
 I'm working on seeing if a similar thing holds for the gradient approximations contrastive divergence gives you in an RBM.

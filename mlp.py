@@ -85,7 +85,7 @@ class MLP:
         return self.layers[-1]
 
 
-    def propagate_backward(self, target, delta_filename, lrate=0.01, momentum=0.05, save=False):
+    def propagate_backward(self, target, delta_filename, lrate=0.01, momentum=0.05, save=False, kill_grad=True):
         ''' Back propagate error related to target using lrate. '''
 
         deltas = []
@@ -104,6 +104,11 @@ class MLP:
         for i in range(len(self.weights)):
             layer = np.atleast_2d(self.layers[i])
             delta = np.atleast_2d(deltas[i])
+            if kill_grad:
+                # print "walla"
+                # print delta
+                # print (np.abs(delta) < 0.005).sum()
+                delta[np.abs(delta) < 0.005] = 0.0
             dw = np.dot(layer.T,delta)
             if i == 0 and save:
                 np.save("layer", self.layers[i])
@@ -168,15 +173,21 @@ if __name__ == '__main__':
         return samples, 784
 
     def test_network(net, samples):
+        correct, total = 0, 0
         for x in xrange(samples.shape[0]):
+            total += 1
             in_pat = samples["input"][x]
             out_pat = samples["output"][x]
             out = network.propagate_forward(in_pat)
             print np.argmax(out), np.argmax(out_pat)
+            if np.argmax(out) == np.argmax(out_pat):
+                correct += 1
+        # lots of less naive things out there
+        print "correct / total: ", correct, " / ", total
 
     print "learning the patterns..."
     samples, dims = create_mnist_samples()
-    network = MLP(dims, 100, 10)
+    network = MLP(dims, 50, 10)
     curr_delta_filename = "delta_" + str(0)
     for i in range(30000):
         if i % 50 == 0:

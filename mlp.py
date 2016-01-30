@@ -96,8 +96,8 @@ class MLP:
         plt.gca().set_yscale("log")
         plt.show()
 
-    def save_weights(self):
-        np.save("weight_mat", self.weights[0])
+    def save_weights(self, name="weight_mat"):
+        np.save(name, self.weights[0])
         print "weights saved"
 
     def propagate_backward(self, target, delta_filename, lrate=0.01, momentum=0.01, save=False, kill_grad=False):
@@ -137,69 +137,68 @@ class MLP:
         return (error**2).sum()
 
 
+def bitfield(n):
+    """
+    Don't care about the MLP results, so don't care about the output patterns
+    So let's do this
+    """
+    return np.array([n >> i & 1 for i in range(7,-1,-1)])
+
+def onehots(n):
+    arr = np.array([-1.0] * 10)
+    arr[n] = 1.0
+    return arr
+
+def create_mnist_samples(filename="mnist.pkl.gz"):
+    # only 500 datapoints, we don't even really need that many
+    # we are not using this net, so can just use training only
+    samples = np.zeros(50000, dtype=[('input',  float, 784), ('output', float, 10)])
+    with gzip.open(filename, "rb") as f:
+        train_set, valid_set, test_set = cPickle.load(f)
+        for x in xrange(50000):
+            samples[x] = train_set[0][x], onehots(train_set[1][x])
+    return samples, 784
+
+def create_cifar_samples(filename="cifar-10-batches-py/data_batch_1"):
+    samples = np.zeros(10000, dtype=[('input',  float, 3072), ('output', float, 10)])
+    with open(filename, "rb") as f:
+        cifar_dict = cPickle.load(f)
+        for x in xrange(10000):
+            # CIFAR is uint8s, but I would like floats
+            samples[x] = cifar_dict["data"][x] / 256.0, onehots(cifar_dict["labels"][x])
+    return samples, 3072
+
+def create_random_samples():
+    # only 500 datapoints, we don't even really need that many
+    # we are not using this net, so can just use training only
+    # big numerical problems with this one!
+    samples = np.zeros(50000, dtype=[('input',  float, 784), ('output', float, 10)])
+    for x in xrange(50000):
+        # try it with either one
+        samples[x] = npr.random(784), onehots(5)
+        # samples[x] = npr.random(784), onehots(npr.random_integers(1, 10))
+    return samples, 784
+
+def test_network(net, samples):
+    correct, total = 0, 0
+    for x in xrange(samples.shape[0]):
+        total += 1
+        in_pat = samples["input"][x]
+        out_pat = samples["output"][x]
+        out = network.propagate_forward(in_pat)
+        print np.argmax(out), np.argmax(out_pat)
+        if np.argmax(out) == np.argmax(out_pat):
+            correct += 1
+    # lots of less naive things out there
+    print "correct / total: ", correct, " / ", total
+
 # -----------------------------------------------------------------------------
 if __name__ == '__main__':
-    import matplotlib
-    import matplotlib.pyplot as plt
-
-    def bitfield(n):
-        """
-        Don't care about the MLP results, so don't care about the output patterns
-        So let's do this
-        """
-        return np.array([n >> i & 1 for i in range(7,-1,-1)])
-
-    def onehots(n):
-        arr = np.array([-1.0] * 10)
-        arr[n] = 1.0
-        return arr
-
-    def create_mnist_samples(filename="mnist.pkl.gz"):
-        # only 500 datapoints, we don't even really need that many
-        # we are not using this net, so can just use training only
-        samples = np.zeros(50000, dtype=[('input',  float, 784), ('output', float, 10)])
-        with gzip.open(filename, "rb") as f:
-            train_set, valid_set, test_set = cPickle.load(f)
-            for x in xrange(50000):
-                samples[x] = train_set[0][x], onehots(train_set[1][x])
-        return samples, 784
-
-    def create_cifar_samples(filename="cifar-10-batches-py/data_batch_1"):
-        samples = np.zeros(10000, dtype=[('input',  float, 3072), ('output', float, 10)])
-        with open(filename, "rb") as f:
-            cifar_dict = cPickle.load(f)
-            for x in xrange(10000):
-                # CIFAR is uint8s, but I would like floats
-                samples[x] = cifar_dict["data"][x] / 256.0, onehots(cifar_dict["labels"][x])
-        return samples, 3072
-
-    def create_random_samples():
-        # only 500 datapoints, we don't even really need that many
-        # we are not using this net, so can just use training only
-        # big numerical problems with this one!
-        samples = np.zeros(50000, dtype=[('input',  float, 784), ('output', float, 10)])
-        for x in xrange(50000):
-            # try it with either one
-            samples[x] = npr.random(784), onehots(5)
-            # samples[x] = npr.random(784), onehots(npr.random_integers(1, 10))
-        return samples, 784
-
-    def test_network(net, samples):
-        correct, total = 0, 0
-        for x in xrange(samples.shape[0]):
-            total += 1
-            in_pat = samples["input"][x]
-            out_pat = samples["output"][x]
-            out = network.propagate_forward(in_pat)
-            print np.argmax(out), np.argmax(out_pat)
-            if np.argmax(out) == np.argmax(out_pat):
-                correct += 1
-        # lots of less naive things out there
-        print "correct / total: ", correct, " / ", total
 
     print "learning the patterns..."
     samples, dims = create_mnist_samples()
     network = MLP(dims, 30, 10)
+    network.save_weights("init_mat")
     curr_delta_filename = "delta_" + str(0)
     for i in range(30000):
         if i % 50 == 0:
@@ -209,4 +208,4 @@ if __name__ == '__main__':
         network.propagate_forward(samples['input'][n])
         network.propagate_backward(samples['output'][n], curr_delta_filename)
     test_network(network, samples[40000:40500])
-    network.save_weights()
+    network.save_weights("weight_mat")

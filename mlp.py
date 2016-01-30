@@ -85,7 +85,7 @@ class MLP:
         return self.layers[-1]
 
 
-    def propagate_backward(self, target, lrate=0.1, momentum=0.1, grad_filename="grad_mat", weight_filename="weight_mat"):
+    def propagate_backward(self, target, delta_filename, lrate=0.1, momentum=0.1, grad_filename="grad_mat", weight_filename="weight_mat"):
         ''' Back propagate error related to target using lrate. '''
 
         deltas = []
@@ -107,7 +107,7 @@ class MLP:
             dw = np.dot(layer.T,delta)
             if i == 0:
                 np.save("layer", self.layers[i])
-                np.save("delta", deltas[i])
+                np.save(delta_filename, deltas[i])
                 np.save(grad_filename, dw)
                 print "layer, delta, dw saved"
             self.weights[i] += lrate*dw + momentum*self.dw[i]
@@ -170,9 +170,12 @@ if __name__ == '__main__':
     print "learning the patterns..."
     samples, dims = create_mnist_samples()
     network = MLP(dims, dims, 10)
+    curr_delta_filename = "delta_" + str(0)
     for i in range(500):
         print "pattern: ", i
+        if i % 50 == 0:
+            curr_delta_filename = "delta_" + str(i)
         n = np.random.randint(samples.size)
         network.propagate_forward(samples['input'][n])
-        network.propagate_backward(samples['output'][n])
+        network.propagate_backward(samples['output'][n], curr_delta_filename)
     print "and then we don't use the net for anything"

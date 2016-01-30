@@ -11,11 +11,11 @@ if __name__ == "__main__":
     print "thresh: ", THRESH
     weights = []
     for x in xrange(delta_mat.shape[0]):
-        weights.append(delta_mat[x] + 1.0)
+        weights.append(delta_mat[x])
     print "see if there is a heavy tail in error value distribution"
     print "let's see that weight histogram, in other weights"
     weight_seq = sorted(weights, reverse=True)
-    plt.hist(weight_seq, bins=30)
+    plt.hist(weight_seq, bins=100)
     plt.gca().set_xscale("log")
     plt.gca().set_yscale("log")
     plt.ylabel("number of errors in histogram bucket")

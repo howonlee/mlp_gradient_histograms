@@ -96,6 +96,10 @@ class MLP:
         plt.gca().set_yscale("log")
         plt.show()
 
+    def save_weights(self):
+        np.save("weight_mat", self.weights[0])
+        print "weights saved"
+
     def propagate_backward(self, target, delta_filename, lrate=0.01, momentum=0.01, save=False, kill_grad=False):
         ''' Back propagate error related to target using lrate. '''
 
@@ -127,9 +131,6 @@ class MLP:
                 np.save("grad_mat", dw)
                 print "layer, delta, dw saved"
             self.weights[i] += lrate*dw + momentum*self.dw[i]
-            if i == 0 and save:
-                np.save("weight_mat", self.weights[i])
-                print "weights saved"
             self.dw[i] = dw
 
         # Return error
@@ -199,14 +200,13 @@ if __name__ == '__main__':
     print "learning the patterns..."
     samples, dims = create_mnist_samples()
     network = MLP(dims, 30, 10)
-    # network.reset_pareto()
     curr_delta_filename = "delta_" + str(0)
-    # for i in range(30000):
-    #     if i % 50 == 0:
-    #         print "pattern: ", i
-    #         curr_delta_filename = "delta_" + str(i)
-    #     n = np.random.randint(samples.size)
-    #     network.propagate_forward(samples['input'][n])
-    #     network.propagate_backward(samples['output'][n], curr_delta_filename)
+    for i in range(30000):
+        if i % 50 == 0:
+            print "pattern: ", i
+            curr_delta_filename = "delta_" + str(i)
+        n = np.random.randint(samples.size)
+        network.propagate_forward(samples['input'][n])
+        network.propagate_backward(samples['output'][n], curr_delta_filename)
     test_network(network, samples[40000:40500])
-    network.disp_weight_hist()
+    network.save_weights()

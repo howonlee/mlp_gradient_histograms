@@ -130,7 +130,8 @@ class MLP:
                 np.save(delta_filename, deltas[i])
                 np.save("grad_mat", dw)
                 print "layer, delta, dw saved"
-            self.weights[i] += lrate*dw + momentum*self.dw[i]
+            # self.weights[i] += lrate*dw + momentum*self.dw[i]
+            self.weights[i] += lrate*dw
             self.dw[i] = dw
 
         # Return error

@@ -18,8 +18,8 @@ if __name__ == "__main__":
     print network_mat.shape
     for x in xrange(30):
         plt.close()
-        plt.plot(network_mat[x, :])
-        plt.plot(init_mat[x, :], "r")
+        plt.hist(network_mat[:, x])
+        # plt.plot(init_mat[:, x], "r")
         plt.show()
     # for x in xrange(30):
     #     plt.close()

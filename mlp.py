@@ -20,6 +20,7 @@
 # -----------------------------------------------------------------------------
 import numpy as np
 import numpy.random as npr
+import matplotlib.pyplot as plt
 import cPickle
 import gzip
 
@@ -51,7 +52,7 @@ class MLP:
         for i in range(1,n):
             self.layers.append(np.ones(self.shape[i]))
 
-        # Build weights matrix (randomly between -0.25 and +0.25)
+        # Build weights matrix (randomly)
         self.weights = []
         for i in range(n-1):
             self.weights.append(np.zeros((self.layers[i].size,
@@ -68,7 +69,12 @@ class MLP:
 
         for i in range(len(self.weights)):
             Z = np.random.random((self.layers[i].size,self.layers[i+1].size))
-            self.weights[i][...] = (2*Z-1)*0.001
+            self.weights[i][...] = (2*Z-1)*0.00001
+
+    def reset_pareto(self):
+        for i in range(len(self.weights)):
+            Z = np.random.pareto(1, size=(self.layers[i].size,self.layers[i+1].size))
+            self.weights[i][...] = Z * 0.000001
 
     def propagate_forward(self, data):
         ''' Propagate data from input layer to output layer. '''
@@ -84,8 +90,13 @@ class MLP:
         # Return output
         return self.layers[-1]
 
+    def disp_weight_hist(self):
+        plt.hist(self.weights[0].ravel())
+        plt.gca().set_xscale("log")
+        plt.gca().set_yscale("log")
+        plt.show()
 
-    def propagate_backward(self, target, delta_filename, lrate=0.01, momentum=0.05, save=False, kill_grad=True):
+    def propagate_backward(self, target, delta_filename, lrate=0.01, momentum=0.01, save=False, kill_grad=False):
         ''' Back propagate error related to target using lrate. '''
 
         deltas = []
@@ -187,13 +198,15 @@ if __name__ == '__main__':
 
     print "learning the patterns..."
     samples, dims = create_mnist_samples()
-    network = MLP(dims, 50, 10)
+    network = MLP(dims, 30, 10)
+    # network.reset_pareto()
     curr_delta_filename = "delta_" + str(0)
-    for i in range(30000):
-        if i % 50 == 0:
-            print "pattern: ", i
-            curr_delta_filename = "delta_" + str(i)
-        n = np.random.randint(samples.size)
-        network.propagate_forward(samples['input'][n])
-        network.propagate_backward(samples['output'][n], curr_delta_filename)
+    # for i in range(30000):
+    #     if i % 50 == 0:
+    #         print "pattern: ", i
+    #         curr_delta_filename = "delta_" + str(i)
+    #     n = np.random.randint(samples.size)
+    #     network.propagate_forward(samples['input'][n])
+    #     network.propagate_backward(samples['output'][n], curr_delta_filename)
     test_network(network, samples[40000:40500])
+    network.disp_weight_hist()

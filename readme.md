@@ -15,6 +15,6 @@ If you are piqued by _that_, try `grad_network.py`, which takes the gradient for
 
 A really fun thing is that using a threshhold instead of sampling from the ensemblesort of replicates the degree multiplicity problem Leskovec et al mentions in their original SKG work, I think.
 
-This is BSD-licensed, made by NP Rougier, edited by Howon Lee. Thanks to Jeff Shrager for helping me poking at it.
+This is BSD-licensed, made by NP Rougier, edited by Howon Lee. Thanks to Jeff Shrager for helping me poke at it.
 
 I'm working on seeing if a similar thing holds for the gradient approximations contrastive divergence gives you in an RBM.
